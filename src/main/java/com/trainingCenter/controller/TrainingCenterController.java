@@ -44,7 +44,12 @@ public class TrainingCenterController {
             @RequestParam Optional<String> centerCode,
             @RequestParam Optional<String> course) {
 
-        List<TrainingCenter> centers = service.getFilteredTrainingCenters(centerName, centerCode, course);
+        List<TrainingCenter> centers = service.getFilteredTrainingCenters(
+                centerName.orElse(null),
+                centerCode.orElse(null),
+                course.orElse(null)
+        );
+
         Map<String, Object> response = new HashMap<>();
         response.put("message", centers.isEmpty() ? "No training centers found" : "Training centers retrieved successfully");
         response.put("data", centers);

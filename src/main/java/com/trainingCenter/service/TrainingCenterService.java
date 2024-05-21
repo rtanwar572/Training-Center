@@ -59,13 +59,13 @@ public class TrainingCenterService {
         repo.deleteById(id);
     }
 
-    public List<TrainingCenter> getFilteredTrainingCenters(Optional<String> centerName, Optional<String> centerCode, Optional<String> course) {
+    public List<TrainingCenter> getFilteredTrainingCenters(String centerName, String centerCode, String course) {
         List<TrainingCenter> centers = repo.findAll();
 
         return centers.stream()
-                .filter(center -> centerName.map(name -> center.getCenterName().contains(name)).orElse(true))
-                .filter(center -> centerCode.map(code -> center.getCenterCode().equals(code)).orElse(true))
-                .filter(center -> course.map(c -> List.of(center.getCoursesOffered()).contains(c)).orElse(true))
+                .filter(center -> centerName == null || center.getCenterName().toLowerCase().contains(centerName.toLowerCase()))
+                .filter(center -> centerCode == null || center.getCenterCode().equals(centerCode))
+                .filter(center -> course == null || center.getCoursesOffered().contains(course))
                 .collect(Collectors.toList());
     }
 }
